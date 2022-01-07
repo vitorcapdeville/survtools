@@ -1,0 +1,24 @@
+Package: survtools
+Type: Package
+Title: Tools for analyzing survival data
+Version: 0.1.0
+Authors@R: person("Vitor", "Capdeville", email = "vgcapdeville@hotmail.com",
+                  role = c("aut", "cre"))
+Description: Useful tools for manipulating and visualizing survival data.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    dplyr,
+    survival,
+    kml,
+    tidyr,
+    tidyselect,
+    stringr,
+    plotly,
+    tibble,
+    stats
