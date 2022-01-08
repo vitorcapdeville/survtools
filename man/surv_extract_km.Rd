@@ -2,20 +2,21 @@
 % Please edit documentation in R/surv_extract.R
 \name{surv_extract_km}
 \alias{surv_extract_km}
-\title{Função para extrair as curvas de sobrevivência a partir de um ajuste km.}
+\title{Extract survival probabilities and 'failure' probabilities}
 \usage{
 surv_extract_km(aj)
 }
 \arguments{
-\item{aj}{objeto com o resutado do ajuste, usualmente o resultado de um
-survfit (km)}
+\item{aj}{aj previously fitted model (using `survival::survfit()`).}
 }
 \value{
-data.frame com as colunas time, id, surv e wx.
-id apresenta as combinações unicas das covariáveis usadas no ajuste.
-surv apresenta as probabilidades de sobrevivencia e wx apresenta as razoes
-numero de eventos/numeros de expostos.
+a data.frame with the following columns: `time`, `id`, `surv` and `wx`.
+`id` is the value of the covariates in the model. If more than one covariate
+is used, they are merged together using `tidyr::unite`.
+`surv` is the survival probability and `wx` is n.event/n.risk, closely related
+with the probability of failing before x + 1, for individuals alive at x.
 }
 \description{
-Função para extrair as curvas de sobrevivência a partir de um ajuste km.
+Uses a previously adjusted survfit model and returns the results in
+a standard and convenient way. Works only for K-M estimates.
 }

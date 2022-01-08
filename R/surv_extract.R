@@ -1,14 +1,22 @@
-#' Função para extrair as curvas de sobrevivência de um ajuste.
+#' Extract survival probabilities and 'failure' probabilities
 #'
-#' @param aj resultado de um modelo de km (usando suvfit) ou de um modelo de cox
-#' (usando coxph), previamente ajustado.
-#' @param newdata data.frame com os valores das covariaveis para a previsao
-#' do modelo de cox. Só é usado quando `class(aj) == "coxph"`.
+#' Uses a previously adjusted survfit or coxph model and returns the results in
+#' a standard and convenient way.
 #'
-#' @return data.frame com as colunas time, id, surv e wx.
-#' id apresenta as combinações unicas das covariáveis usadas no ajuste.
-#' surv apresenta as probabilidades de sobrevivencia e wx apresenta as razoes
-#' numero de eventos/numeros de expostos.
+#' @param aj previously fitted model (using `survival::survfit.formula` or `survival::coxph`).
+#' @param newdata a data frame with the same variable names as those that appear
+#' in the coxph formula. It is also valid to use a vector, if the data frame
+#' would consist of a single row.
+#' The curve(s) produced will be representative of a cohort whose covariates
+#' correspond to the values in newdata.
+#' Default is the mean of the covariates used in the coxph fit.
+#' Only used if aj is a `coxph` fit.
+#'
+#' @return a data.frame with the following columns: `time`, `id`, `surv` and `wx`.
+#' `id` is the value of the covariates in the model. If more than one covariate
+#' is used, they are merged together using `tidyr::unite`.
+#' `surv` is the survival probability and `wx` is n.event/n.risk, closely related
+#' with the probability of failing before x + 1, for individuals alive at x.
 #'
 #' @export
 #'
@@ -23,6 +31,7 @@
 #'
 #' aj <- coxph(Surv(time, status) ~ sex, data = lung)
 #' surv_extract(aj, newdata = data.frame(sex = c(1, 2)))
+#'
 surv_extract <- function(aj, newdata = NULL) {
   stopifnot(length(class(aj)) == 1 & class(aj) %in% c("coxph", "survfit"))
   if (class(aj) == "coxph") {
@@ -38,10 +47,12 @@ surv_extract <- function(aj, newdata = NULL) {
         ret,
         id
       ),
-      time <= time[max(which(wx != 0))]
+      # Entender pq as vezes da o warning aqui
+      # acho q tem a ver com o KM, colocando um tempo a mais.
+      time <= time[suppressWarnings(max(which(wx != 0)))]
     )
   )
-  return(completa_surv(ret))
+  return(surv_fill(ret))
 }
 
 
@@ -85,15 +96,18 @@ surv_extract_cox <- function(aj, newdata) {
   return(curvas)
 }
 
-#' Função para extrair as curvas de sobrevivência a partir de um ajuste km.
+#' Extract survival probabilities and 'failure' probabilities
 #'
-#' @param aj objeto com o resutado do ajuste, usualmente o resultado de um
-#' survfit (km)
+#' Uses a previously adjusted survfit model and returns the results in
+#' a standard and convenient way. Works only for K-M estimates.
 #'
-#' @return data.frame com as colunas time, id, surv e wx.
-#' id apresenta as combinações unicas das covariáveis usadas no ajuste.
-#' surv apresenta as probabilidades de sobrevivencia e wx apresenta as razoes
-#' numero de eventos/numeros de expostos.
+#' @param aj aj previously fitted model (using `survival::survfit()`).
+#'
+#' @return a data.frame with the following columns: `time`, `id`, `surv` and `wx`.
+#' `id` is the value of the covariates in the model. If more than one covariate
+#' is used, they are merged together using `tidyr::unite`.
+#' `surv` is the survival probability and `wx` is n.event/n.risk, closely related
+#' with the probability of failing before x + 1, for individuals alive at x.
 #'
 surv_extract_km <- function(aj) {
   if (!is.null(aj$strata)) {
@@ -120,7 +134,7 @@ surv_extract_km <- function(aj) {
 #' sem buracos na coluna time. Os wx's faltantes são preenchidos
 #' por zero.
 #'
-completa_surv <- function(sobrev) {
+surv_fill <- function(sobrev) {
   aux_tempos <- dplyr::ungroup(
     dplyr::summarise(
       dplyr::group_by(

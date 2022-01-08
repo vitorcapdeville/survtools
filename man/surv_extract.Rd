@@ -2,25 +2,31 @@
 % Please edit documentation in R/surv_extract.R
 \name{surv_extract}
 \alias{surv_extract}
-\title{Função para extrair as curvas de sobrevivência de um ajuste.}
+\title{Extract survival probabilities and 'failure' probabilities}
 \usage{
 surv_extract(aj, newdata = NULL)
 }
 \arguments{
-\item{aj}{resultado de um modelo de km (usando suvfit) ou de um modelo de cox
-(usando coxph), previamente ajustado.}
+\item{aj}{previously fitted model (using `survival::survfit.formula` or `survival::coxph`).}
 
-\item{newdata}{data.frame com os valores das covariaveis para a previsao
-do modelo de cox. Só é usado quando `class(aj) == "coxph"`.}
+\item{newdata}{a data frame with the same variable names as those that appear
+in the coxph formula. It is also valid to use a vector, if the data frame
+would consist of a single row.
+The curve(s) produced will be representative of a cohort whose covariates
+correspond to the values in newdata.
+Default is the mean of the covariates used in the coxph fit.
+Only used if aj is a `coxph` fit.}
 }
 \value{
-data.frame com as colunas time, id, surv e wx.
-id apresenta as combinações unicas das covariáveis usadas no ajuste.
-surv apresenta as probabilidades de sobrevivencia e wx apresenta as razoes
-numero de eventos/numeros de expostos.
+a data.frame with the following columns: `time`, `id`, `surv` and `wx`.
+`id` is the value of the covariates in the model. If more than one covariate
+is used, they are merged together using `tidyr::unite`.
+`surv` is the survival probability and `wx` is n.event/n.risk, closely related
+with the probability of failing before x + 1, for individuals alive at x.
 }
 \description{
-Função para extrair as curvas de sobrevivência de um ajuste.
+Uses a previously adjusted survfit or coxph model and returns the results in
+a standard and convenient way.
 }
 \examples{
 
@@ -32,6 +38,6 @@ aj <- coxph(Surv(time, status) ~ sex, data = lung)
 surv_extract(aj, newdata = data.frame(sex = 1))
 
 aj <- coxph(Surv(time, status) ~ sex, data = lung)
-surv_extract(aj, newdata = data.frame(sex = c(1,2)))
+surv_extract(aj, newdata = data.frame(sex = c(1, 2)))
 
 }
