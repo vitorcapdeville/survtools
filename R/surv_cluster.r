@@ -25,7 +25,12 @@ surv_cluster <- function(aj, n_clusters) {
   names(km) <- c("id", paste("t", 1:(ncol(km) - 1)))
   km_cld <- kml::cld(km)
   option <- kml::parALGO(saveFreq = Inf, distanceName = "canberra")
-  kml::kml(km_cld, nbRedrawing = 1, nbClusters = n_clusters, parAlgo = option)
+  # prevent annoying print
+  invisible(
+    capture.output(
+      kml::kml(km_cld, nbRedrawing = 1, nbClusters = n_clusters, parAlgo = option)
+    )
+  )
   aux_cluster <- paste0("c", n_clusters)
   ret <- data.frame(
     id = km_cld["idFewNA"],
