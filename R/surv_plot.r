@@ -20,16 +20,16 @@ surv_plot <- function(aj, type = c("both", "surv", "wx")) {
   type <- match.arg(type)
 
   km <- surv_extract(aj)
-
-    if (type == "both") {
-    ret <- plotly::subplot(
-      plotly::style(surv_extract_plot(km, type = "surv"), showlegend = F),
-      plotly::style(surv_extract_plot(km, type = "wx"), showlegend = T)
-    )
+  if (type == "both") {
+    suppressWarnings(
+      plotly::subplot(
+        plotly::style(surv_extract_plot(km, type = "surv"), showlegend = F),
+        plotly::style(surv_extract_plot(km, type = "wx"), showlegend = T)
+      )
+  )
   } else {
-    ret <- surv_extract_plot(km, type = type)
+    surv_extract_plot(km, type = type)
   }
-  return(ret)
 }
 
 #' Plot a comparison between the unclusterized and clusterized survival.
@@ -69,7 +69,7 @@ surv_plot_cluster <- function(x, data, time = "time", event = "event", x_cluster
   fig1 <- surv_extract_plot(km, color = x_cluster, legendgroup = x_cluster, type = "wx")
   fig2 <- surv_extract_plot(km_cluster, type = "wx")
 
-  plotly::subplot(fig1, plotly::style(fig2, showlegend = F), shareY = TRUE)
+  suppressWarnings(plotly::subplot(fig1, plotly::style(fig2, showlegend = F), shareY = TRUE))
 }
 
 
@@ -90,14 +90,18 @@ surv_plot_cluster <- function(x, data, time = "time", event = "event", x_cluster
 surv_extract_plot <- function(data, color = "id", legendgroup = "id", type = c("wx", "surv")) {
   type <- match.arg(type)
   shape <- if (type == "surv") "hv" else "linear"
-  plotly::add_trace(
-    plotly::plot_ly(type = "scatter", mode = "lines"),
-    data = data,
-    x = ~time,
-    y = stats::formula(paste0("~", type)),
-    color = stats::formula(paste0("~", color)),
-    name = ~id,
-    legendgroup = stats::formula(paste0("~", legendgroup)),
-    line = list(shape = shape)
+  fig <- plotly::layout(
+    plotly::add_trace(
+      plotly::plot_ly(type = "scatter", mode = "lines"),
+      data = data,
+      x = ~time,
+      y = stats::formula(paste0("~", type)),
+      color = stats::formula(paste0("~", color)),
+      name = ~id,
+      legendgroup = stats::formula(paste0("~", legendgroup)),
+      line = list(shape = shape)
+    ),
+    legend = list(orientation = 'h')
   )
+  suppressWarnings(print(fig))
 }

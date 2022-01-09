@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # survtools
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/vitorcapdeville/survtools/branch/main/graph/badge.svg)](https://codecov.io/gh/vitorcapdeville/survtools?branch=main)
 <!-- badges: end -->
 
 The goal of survtools is to ...
