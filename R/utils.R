@@ -14,5 +14,5 @@
 #' @export
 #'
 surv_aj <- function(x, data, ...) {
-  survival::survfit(stats::formula(paste0("Surv(time,event)~", x)), data = data, ...)
+  survival::survfit(stats::formula(paste0("survival::Surv(time,event)~", x)), data = data, ...)
 }
