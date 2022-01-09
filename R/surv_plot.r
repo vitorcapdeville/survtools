@@ -23,11 +23,11 @@ surv_plot <- function(aj, type = c("both", "surv", "wx")) {
 
     if (type == "both") {
     ret <- plotly::subplot(
-      plotly::style(surv_plot_aux(km, type = "surv"), showlegend = F),
-      plotly::style(surv_plot_aux(km, type = "wx"), showlegend = T)
+      plotly::style(surv_extract_plot(km, type = "surv"), showlegend = F),
+      plotly::style(surv_extract_plot(km, type = "wx"), showlegend = T)
     )
   } else {
-    ret <- surv_plot_aux(km, type = type)
+    ret <- surv_extract_plot(km, type = type)
   }
   return(ret)
 }
@@ -66,16 +66,28 @@ surv_plot_cluster <- function(x, data, time = "time", event = "event", x_cluster
 
   km_cluster <- surv_extract(surv_aj(x_cluster, data, time, event, ...))
 
-  fig1 <- surv_plot_aux(km, color = x_cluster, legendgroup = x_cluster, type = "wx")
-  fig2 <- surv_plot_aux(km_cluster, type = "wx")
+  fig1 <- surv_extract_plot(km, color = x_cluster, legendgroup = x_cluster, type = "wx")
+  fig2 <- surv_extract_plot(km_cluster, type = "wx")
 
   plotly::subplot(fig1, plotly::style(fig2, showlegend = F), shareY = TRUE)
 }
 
 
+#' Plot the output of a `surv_extract`
 #'
+#' This function can plot any of the columns of the output of `surv_extract`
 #'
-surv_plot_aux <- function(data, color = "id", legendgroup = "id", type = c("wx", "surv")) {
+#' @param data the result of a `surv_extract` call.
+#' @param color name of the column to be used as color.
+#' @param legendgroup name of the column to agregate the legend. Used only when ploting more than
+#' one curve with `plotly::subplot`.
+#' @param type should the wx or the surv column be plotted?
+#'
+#' @return a plotly of the requested column versus time.
+#'
+#' @export
+#'
+surv_extract_plot <- function(data, color = "id", legendgroup = "id", type = c("wx", "surv")) {
   type <- match.arg(type)
   shape <- if (type == "surv") "hv" else "linear"
   plotly::add_trace(
