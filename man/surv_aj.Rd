@@ -4,14 +4,18 @@
 \alias{surv_aj}
 \title{Fit a KM estimate with only one covariate}
 \usage{
-surv_aj(x, data, ...)
+surv_aj(x, data, time = "time", event = "event", ...)
 }
 \arguments{
-\item{x}{name of the covariate column}
+\item{x}{name of the covariate column.}
 
 \item{data}{data.frame with the survival data.}
 
-\item{...}{extra arguments passed to `survival::survfit`}
+\item{time}{name of the time variable column.}
+
+\item{event}{name of the censor/death variable column.}
+
+\item{...}{extra arguments passed to `survival::survfit`.}
 }
 \value{
 an object of class "survfit". See survfit.object for details. Methods defined for survfit objects are print, plot, lines, and points.

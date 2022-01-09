@@ -21,27 +21,7 @@ surv_plot <- function(aj, type = c("both", "surv", "wx")) {
 
   km <- surv_extract(aj)
 
-  # surv <- plotly::add_trace(
-  #   plotly::plot_ly(type = "scatter", mode = "lines"),
-  #   data = km,
-  #   x = ~time,
-  #   y = ~surv,
-  #   color = ~id,
-  #   legendgroup = ~id,
-  #   line = list(shape = "hv")
-  # )
-  #
-  # wx <- plotly::add_trace(
-  #   plotly::plot_ly(type = "scatter", mode = "lines"),
-  #   data = km,
-  #   x = ~time,
-  #   y = ~wx,
-  #   color = ~id,
-  #   name = ~id,
-  #   legendgroup = ~id
-  # )
-
-  if (type == "both") {
+    if (type == "both") {
     ret <- plotly::subplot(
       plotly::style(surv_plot_aux(km, type = "surv"), showlegend = F),
       plotly::style(surv_plot_aux(km, type = "wx"), showlegend = T)
@@ -69,12 +49,12 @@ surv_plot <- function(aj, type = c("both", "surv", "wx")) {
 #'
 #' @export
 #'
-surv_plot_cluster <- function(x, data, x_cluster = paste0(x, "Cluster"), ...) {
+surv_plot_cluster <- function(x, data, time = "time", event = "event", x_cluster = paste0(x, "Cluster"), ...) {
   by <- c(x)
   names(by) <- "id"
 
   km <- dplyr::left_join(
-    surv_extract(surv_aj(x, data, ...)),
+    surv_extract(surv_aj(x, data, time, event, ...)),
     dplyr::distinct(
       data,
       dplyr::across(
@@ -84,7 +64,7 @@ surv_plot_cluster <- function(x, data, x_cluster = paste0(x, "Cluster"), ...) {
     by = by
   )
 
-  km_cluster <- surv_extract(surv_aj(x_cluster, data, ...))
+  km_cluster <- surv_extract(surv_aj(x_cluster, data, time, event, ...))
 
   fig1 <- surv_plot_aux(km, color = x_cluster, legendgroup = x_cluster, type = "wx")
   fig2 <- surv_plot_aux(km_cluster, type = "wx")

@@ -4,16 +4,27 @@
 \alias{surv_plot_cluster}
 \title{Plot a comparison between the unclusterized and clusterized survival.}
 \usage{
-surv_plot_cluster(x, data, x_cluster = paste0(x, "Cluster"), ...)
+surv_plot_cluster(
+  x,
+  data,
+  time = "time",
+  event = "event",
+  x_cluster = paste0(x, "Cluster"),
+  ...
+)
 }
 \arguments{
-\item{x}{name of the covariate column}
+\item{x}{name of the covariate column.}
 
 \item{data}{data.frame with the survival data.}
 
+\item{time}{name of the time variable column.}
+
+\item{event}{name of the censor/death variable column.}
+
 \item{x_cluster}{name of the clusterized covariate}
 
-\item{...}{extra arguments passed to `survival::survfit`}
+\item{...}{extra arguments passed to `survival::survfit`.}
 }
 \value{
 a plotly graph comparing the clusterization of `x` with regard to
