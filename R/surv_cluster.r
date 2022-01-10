@@ -27,7 +27,7 @@ surv_cluster <- function(aj, n_clusters) {
   option <- kml::parALGO(saveFreq = Inf, distanceName = "canberra")
   # prevent annoying print
   invisible(
-    capture.output(
+    utils::capture.output(
       kml::kml(km_cld, nbRedrawing = 1, nbClusters = n_clusters, parAlgo = option)
     )
   )
