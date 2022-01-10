@@ -4,6 +4,10 @@
 # survtools
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/vitorcapdeville/survtools/branch/main/graph/badge.svg)](https://codecov.io/gh/vitorcapdeville/survtools?branch=main)
+[![R-CMD-check](https://github.com/vitorcapdeville/survtools/workflows/R-CMD-check/badge.svg)](https://github.com/vitorcapdeville/survtools/actions)
 <!-- badges: end -->
 
 The goal of survtools is to …
