@@ -28,7 +28,8 @@ surv_plot <- function(aj, type = c("both", "surv", "wx")) {
       )
   )
   } else {
-    surv_extract_plot(km, type = type)
+    fig <- surv_extract_plot(km, type = type)
+    suppressWarnings(print(fig))
   }
 }
 

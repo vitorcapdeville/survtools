@@ -14,6 +14,7 @@ test_that("surv_extract (km) works", {
     res2,
     expec2
   )
+  expect_warning(surv_extract(aj, newdata = data.frame(1)), "Argumento newdata ignorado no K-M.")
 })
 
 test_that("surv_extract (coxph) works", {
