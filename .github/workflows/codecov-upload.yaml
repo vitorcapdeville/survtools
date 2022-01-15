@@ -1,0 +1,21 @@
+on:
+  push:
+    branches: [main, master]
+
+name: codecov-upload
+
+jobs:
+  codecov-upload:
+    runs-on: ubuntu-latest
+    env:
+
+    steps:
+      - uses: r-lib/actions/setup-r@v2
+
+      - uses: r-lib/actions/setup-r-dependencies@v1
+        with:
+          extra-packages: covr
+
+      - name: Upload codecov results
+        run: Rscript -e 'covr::codecov(token = "ecd468d1-a338-4a72-8cda-2a0a59c5ab75")'
+
