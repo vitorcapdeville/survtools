@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # survtools
@@ -16,16 +15,13 @@ The goal of survtools is to …
 
 You can install the released version of survtools with:
 
-``` r
-install.packages("remotes")
-remotes::install_github("vitorcapdeville/survtools")
-```
+    install.packages("remotes")
+    remotes::install_github("vitorcapdeville/survtools")
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
-library(survtools)
-## basic example code
-```
+    library(survtools)
+    ## basic example code
+    # worked?
