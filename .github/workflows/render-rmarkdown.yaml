@@ -23,11 +23,14 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: rmarkdown
+          extra-packages: rmarkdown, covr
 
 
       - name: render README
         run: Rscript -e 'rmarkdown::render("README.Rmd", output_format = "md_document")'
+
+      - name: Upload codecov results
+        run: Rscript -e 'covr::codecov(token = "ecd468d1-a338-4a72-8cda-2a0a59c5ab75")'
 
       - name: Commit results
         run: |
