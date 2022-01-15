@@ -22,12 +22,19 @@ test_that("surv_plot have known output", {
   aj2 <- surv_aj("xCluster", add_cluster(surv_fake, surv_cluster(aj, 2), "x"))
 
   vdiffr::expect_doppelganger("surv_plot both", surv_plot(aj))
-  vdiffr::expect_doppelganger("surv_plot wx", surv_plot(aj, type = "wx"))
-  vdiffr::expect_doppelganger("surv_plot surv", surv_plot(aj, type = "surv"))
   vdiffr::expect_doppelganger("surv_plot n < 3 both", surv_plot(aj2))
-  vdiffr::expect_doppelganger("surv_plot n < 3 wx", surv_plot(aj2, type = "wx"))
-  vdiffr::expect_doppelganger("surv_plot n < 3 surv", surv_plot(aj2, type = "surv"))
 
 })
 
 
+test_that("surv_plot have known output", {
+
+  aj <- surv_aj("x", surv_fake)
+  aj2 <- surv_aj("xCluster", add_cluster(surv_fake, surv_cluster(aj, 2), "x"))
+
+  vdiffr::expect_doppelganger("surv_plot wx", surv_plot(aj, type = "wx"))
+  vdiffr::expect_doppelganger("surv_plot surv", surv_plot(aj, type = "surv"))
+  vdiffr::expect_doppelganger("surv_plot n < 3 wx", surv_plot(aj2, type = "wx"))
+  vdiffr::expect_doppelganger("surv_plot n < 3 surv", surv_plot(aj2, type = "surv"))
+
+})
