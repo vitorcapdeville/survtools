@@ -28,8 +28,9 @@ surv_plot <- function(aj, type = c("both", "surv", "wx")) {
       )
   )
   } else {
-    fig <- surv_extract_plot(km, type = type)
-    suppressWarnings(print(fig))
+    suppressWarnings(
+      plotly::subplot(surv_extract_plot(km, type = type))
+    )
   }
 }
 
