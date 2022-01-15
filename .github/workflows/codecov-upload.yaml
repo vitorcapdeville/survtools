@@ -7,7 +7,6 @@ name: codecov-upload
 jobs:
   codecov-upload:
     runs-on: ubuntu-latest
-    env:
 
     steps:
       - uses: r-lib/actions/setup-r@v2
