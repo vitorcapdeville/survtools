@@ -33,6 +33,8 @@ surv_aj <- function(x, data, time = "time", event = "event", ...) {
 #'
 #' @return a data.table with the extra columns: event, dataInicio, dataFim, tempoInicio, tempoFim
 #'
+#' @export
+#'
 truncate_interval <- function(data, time_int, startDate, endDate, censor){
   startInt = lubridate::ymd(lubridate::int_start(time_int))
   endInt = lubridate::ymd(lubridate::int_end(time_int))
