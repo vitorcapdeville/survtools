@@ -24,7 +24,8 @@ Imports:
     tibble,
     stats,
     vdiffr,
-    utils
+    utils,
+    magrittr
 Depends: 
     data.table,
     R (>= 2.10)

@@ -33,6 +33,7 @@ surv_aj <- function(x, data, time = "time", event = "event", ...) {
 #'
 #' @return a data.table with the extra columns: event, dataInicio, dataFim, tempoInicio, tempoFim
 #'
+#' @importFrom data.table :=
 #' @export
 #'
 truncate_interval <- function(data, time_int, startDate, endDate, censor){
