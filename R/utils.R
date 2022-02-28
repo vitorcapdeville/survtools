@@ -1,5 +1,5 @@
-dataInicio = NULL
-dataFim = NULL
+dataInicio <- NULL
+dataFim <- NULL
 #' Fit a KM estimate with only one covariate
 #'
 #' Wrapper around `survival::survfit.formula` for allowing the use of `purrr::map` and fit
@@ -18,7 +18,7 @@ dataFim = NULL
 #' @export
 #'
 surv_aj <- function(x, data, time = "time", event = "event", ...) {
-  survival::survfit(stats::formula(paste0("survival::Surv(",time,",",event,")~", x)), data = data, ...)
+  survival::survfit(stats::formula(paste0("survival::Surv(", time, ",", event, ")~", x)), data = data, ...)
 }
 
 #' Truncate survival times
@@ -38,24 +38,34 @@ surv_aj <- function(x, data, time = "time", event = "event", ...) {
 #' @importFrom data.table :=
 #' @export
 #'
-truncate_interval <- function(data, time_int, startDate, endDate, censor){
-  startInt = lubridate::ymd(lubridate::int_start(time_int))
-  endInt = lubridate::ymd(lubridate::int_end(time_int))
-  ret = data[
+truncate_interval <- function(data, time_int, startDate, endDate, censor) {
+  startInt <- lubridate::ymd(lubridate::int_start(time_int))
+  endInt <- lubridate::ymd(lubridate::int_end(time_int))
+  ret <- data[
     ,
-    c(startDate, endDate) := list(lubridate::ymd(get(startDate)), lubridate::ymd(get(endDate)))
+    `:=`(
+      c(startDate, endDate), list(
+        lubridate::ymd(get(startDate)),
+        lubridate::ymd(get(endDate))
+      )
+    )
   ][
     lubridate::int_overlaps(
-      lubridate::interval(get(startDate),get(endDate)),
-      time_int
+      lubridate::interval(
+        get(startDate),
+        get(endDate)
+      ), time_int
     ),
-  ][
-    ,
-    c("event", "dataInicio", "dataFim") := list(
-      dplyr::if_else(
+  ][, `:=`(
+    c(
+      "event",
+      "dataInicio",
+      "dataFim"
+    ), list(
+      ifelse(
         endInt <= get(endDate),
         0,
-        as.numeric(!!censor)
+        !!censor
       ),
       dplyr::if_else(
         startInt >= get(startDate),
@@ -68,17 +78,22 @@ truncate_interval <- function(data, time_int, startDate, endDate, censor){
         get(endDate)
       )
     )
-  ][
+  )][
     ,
-    c("tempoInicio", "tempoFim") := list(
-      lubridate::interval(
-        get(startDate),
-        dataInicio
-      ) %/% months(1),
-      tempoFim = lubridate::interval(
-        get(startDate),
-        dataFim
-      ) %/% months(1)
+    `:=`(
+      c(
+        "tempoInicio",
+        "tempoFim"
+      ), list(
+        lubridate::interval(
+          get(startDate),
+          dataInicio
+        ) %/% months(1, F),
+        lubridate::interval(
+          get(startDate),
+          dataFim
+        ) %/% months(1, F)
+      )
     )
   ]
   return(ret)
