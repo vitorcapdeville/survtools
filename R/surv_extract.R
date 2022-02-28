@@ -49,7 +49,7 @@ surv_extract <- function(aj, newdata = NULL) {
       ),
       # Entender pq as vezes da o warning aqui
       # acho q tem a ver com o KM, colocando um tempo a mais.
-      time <= time[suppressWarnings(max(which(wx != 0)))]
+      time <= time[ifelse(suppressWarnings(max(which(wx != 0))) == -Inf, Inf, suppressWarnings(max(which(wx != 0))))]
     )
   )
   return(surv_fill(ret))

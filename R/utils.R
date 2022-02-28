@@ -65,7 +65,7 @@ truncate_interval <- function(data, time_int, startDate, endDate, censor) {
       ifelse(
         endInt <= get(endDate),
         0,
-        !!censor
+        get(censor)
       ),
       dplyr::if_else(
         startInt >= get(startDate),
