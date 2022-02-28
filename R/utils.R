@@ -70,7 +70,7 @@ truncate_interval <- function(data, time_int, startDate, endDate, censor){
     )
   ][
     ,
-    c("tempoInicio", "tempoFim") := list(
+    c("tempoInicial", "tempoFinal") := list(
       lubridate::interval(
         get(startDate),
         dataInicio
