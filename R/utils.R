@@ -1,3 +1,5 @@
+dataInicio = NULL
+dataFim = NULL
 #' Fit a KM estimate with only one covariate
 #'
 #' Wrapper around `survival::survfit.formula` for allowing the use of `purrr::map` and fit

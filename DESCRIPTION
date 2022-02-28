@@ -25,7 +25,8 @@ Imports:
     stats,
     vdiffr,
     utils,
-    magrittr
-Depends: 
+    magrittr,
     data.table,
+    lubridate
+Depends: 
     R (>= 2.10)
