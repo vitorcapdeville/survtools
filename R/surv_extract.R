@@ -141,7 +141,7 @@ surv_fill <- function(sobrev) {
         sobrev,
         id
       ),
-      time = seq(max(time))
+      time = seq(from = 0, to = max(time))
     )
   )
 

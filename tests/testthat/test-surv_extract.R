@@ -1,10 +1,12 @@
+# Talvez um teste melhor pro surv_extract seria comparar o surv do surv extract com o surv do summary(survfit(...))
+
 test_that("surv_extract (km) works", {
   aj <- survival::survfit(survival::Surv(c(1, 2, 3), c(0, 1, 0)) ~ 1)
 
   res1 <- surv_extract_km(aj)
   expec1 <- data.frame(time = c(1, 2, 3), id = c("", "", ""), surv = c(1, 0.5, 0.5), wx = c(0, 0.5, 0))
   res2 <- surv_extract(aj)
-  expec2 <- tibble::tibble(id = c("", ""), time = c(1, 2), surv = c(1, 0.5), wx = c(0, 0.5))
+  expec2 <- tibble::tibble(id = c("","", ""), time = c(0, 1, 2), surv = c(1, 1, 0.5), wx = c(0, 0, 0.5))
 
   expect_equal(
     res1,
@@ -31,10 +33,10 @@ test_that("surv_extract (coxph) works", {
   res <- surv_extract(aj, newdata)
 
   expec <- tibble::tibble(
-    id = c("0", "0", "0", "0", "1", "1", "1", "1"),
-    time = c(1, 2, 3, 4, 1, 2, 3, 4),
-    surv = c(0.8746123, 0.5775050, 0.4206200, 0.1547375, 0.8566717, 0.5304792, 0.3678794, 0.1159379),
-    wx = c(0.1253877, 0.3397017, 0.2716600, 0.6321206, 0.1433283, 0.3807672, 0.3065148, 0.6848481)
+    id = c("0", "0", "0", "0", "0", "1", "1", "1", "1", "1"),
+    time = c(0, 1, 2, 3, 4, 0, 1, 2, 3, 4),
+    surv = c(1, 0.8746123, 0.5775050, 0.4206200, 0.1547375, 1, 0.8566717, 0.5304792, 0.3678794, 0.1159379),
+    wx = c(0, 0.1253877, 0.3397017, 0.2716600, 0.6321206, 0, 0.1433283, 0.3807672, 0.3065148, 0.6848481)
   )
 
   res2 <- surv_extract_cox(aj, newdata)
