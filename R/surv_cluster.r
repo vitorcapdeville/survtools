@@ -5,13 +5,14 @@
 #' function.
 #'
 #' @param n_clusters number of clusters, as defined in `kml::kml`.
+#' @param parAlgo,nbRedrawing argumentos passados para `kml::kml`.
 #' @inheritParams surv_extract_km
 #'
 #' @return a data.frame with the resulting groups.
 #'
 #' @export
 #'
-surv_cluster <- function(aj, n_clusters) {
+surv_cluster <- function(aj, n_clusters, nbRedrawing = 1, parAlgo = kml::parALGO(saveFreq = Inf, distanceName = "canberra")) {
   km <- as.data.frame(
     tidyr::pivot_wider(
       dplyr::select(
@@ -24,11 +25,11 @@ surv_cluster <- function(aj, n_clusters) {
   )
   names(km) <- c("id", paste("t", 1:(ncol(km) - 1)))
   km_cld <- kml::cld(km)
-  option <- kml::parALGO(saveFreq = Inf, distanceName = "canberra")
+  option <- parAlgo
   # prevent annoying print
   invisible(
     utils::capture.output(
-      kml::kml(km_cld, nbRedrawing = 1, nbClusters = n_clusters, parAlgo = option)
+      kml::kml(km_cld, nbRedrawing = nbRedrawing, nbClusters = n_clusters, parAlgo = option)
     )
   )
   aux_cluster <- paste0("c", n_clusters)

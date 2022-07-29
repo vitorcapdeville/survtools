@@ -4,12 +4,19 @@
 \alias{surv_cluster}
 \title{K-means clusterization for survival data}
 \usage{
-surv_cluster(aj, n_clusters)
+surv_cluster(
+  aj,
+  n_clusters,
+  nbRedrawing = 1,
+  parAlgo = kml::parALGO(saveFreq = Inf, distanceName = "canberra")
+)
 }
 \arguments{
 \item{aj}{aj previously fitted model (using `survival::survfit()`).}
 
 \item{n_clusters}{number of clusters, as defined in `kml::kml`.}
+
+\item{parAlgo, nbRedrawing}{argumentos passados para `kml::kml`.}
 }
 \value{
 a data.frame with the resulting groups.

@@ -33,11 +33,11 @@
 #' surv_extract(aj, newdata = data.frame(sex = c(1, 2)))
 #'
 surv_extract <- function(aj, newdata = NULL) {
-  stopifnot(length(class(aj)) == 1 & class(aj) %in% c("coxph", "survfit"))
-  if (class(aj) == "coxph") {
+  stopifnot(length(class(aj)) == 1 & (methods::is(aj, "coxph") || methods::is(aj, "survfit") ))
+  if (methods::is(aj, "coxph")) {
     stopifnot(!is.null(newdata))
     ret <- surv_extract_cox(aj, newdata)
-  } else if (class(aj) == "survfit") {
+  } else if (methods::is(aj, "survfit")) {
     if (!is.null(newdata)) warning("Argumento newdata ignorado no K-M.")
     ret <- surv_extract_km(aj)
   }
