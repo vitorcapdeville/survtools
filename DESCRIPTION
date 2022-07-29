@@ -1,7 +1,7 @@
 Type: Package
 Package: survtools
 Title: Tools for analyzing survival data
-Version: 0.1.0.9000
+Version: 0.1.0.9001
 Authors@R: 
     person("Vitor", "Capdeville", , "vgcapdeville@hotmail.com", role = c("aut", "cre"))
 Description: Useful tools for manipulating and visualizing survival data.
