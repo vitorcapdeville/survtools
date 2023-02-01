@@ -135,15 +135,14 @@ surv_extract_km <- function(aj) {
 #' por zero.
 #'
 surv_fill <- function(sobrev) {
-  aux_tempos <- dplyr::ungroup(
-    dplyr::summarise(
-      dplyr::group_by(
-        sobrev,
-        id
-      ),
-      time = seq(from = 0, to = max(time))
-    )
+  aux_tempos <- dplyr::reframe(
+    dplyr::group_by(
+      sobrev,
+      id
+    ),
+    time = seq(from = 0, to = max(time))
   )
+
 
 
   res <- dplyr::ungroup(
