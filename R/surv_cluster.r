@@ -6,13 +6,17 @@
 #'
 #' @param n_clusters number of clusters, as defined in `kml::kml`.
 #' @param parAlgo,nbRedrawing argumentos passados para `kml::kml`.
+#' @param starting_seed Semente de início da função
 #' @inheritParams surv_extract_km
 #'
 #' @return a data.frame with the resulting groups.
 #'
 #' @export
 #'
-surv_cluster <- function(aj, n_clusters, nbRedrawing = 1, parAlgo = kml::parALGO(saveFreq = Inf, distanceName = "canberra")) {
+surv_cluster <- function(aj, n_clusters, nbRedrawing = 1, parAlgo = kml::parALGO(saveFreq = Inf, distanceName = "canberra"),
+                         starting_seed = sample(1:2^31, 1)) {
+
+  set.seed(starting_seed)
   km <- as.data.frame(
     tidyr::pivot_wider(
       dplyr::select(
